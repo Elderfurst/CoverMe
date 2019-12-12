@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -8,30 +9,31 @@ namespace CitiesImporter
 {
     public class Program
     {
-        private static readonly string dataSource = "";
-        private static readonly string username = "";
-        private static readonly string password = "";
-        private static readonly string initialCatalog = "CoverMe";
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length != 5)
             {
-                Console.WriteLine("Include the full path to the json file to import");
+                Console.WriteLine("CitiesImporter expects 5 paramters in this order: DataSource, Username, Password, InitialCatalog, FilePath");
                 Environment.Exit(1);
             }
 
-            var filePath = args[0];
+            var dataSource = args[0];
+            var username = args[1];
+            var password = args[2];
+            var initialCatalog = args[3];
+            var filePath = args[4];
 
             var file = File.ReadAllText(filePath);
 
             var cities = JsonConvert.DeserializeObject<List<City>>(file);
 
-            var builder = new SqlConnectionStringBuilder();
-
-            builder.DataSource = dataSource;
-            builder.UserID = username;
-            builder.Password = password;
-            builder.InitialCatalog = initialCatalog;
+            var builder = new SqlConnectionStringBuilder
+            {
+                DataSource = dataSource,
+                UserID = username,
+                Password = password,
+                InitialCatalog = initialCatalog
+            };
 
             using (var connection = new SqlConnection(builder.ConnectionString))
             {
@@ -47,23 +49,32 @@ namespace CitiesImporter
                 {
                     var truncatedCount = truncateCommand.ExecuteNonQuery();
 
-                    Console.WriteLine($"Truncated {truncatedCount} cities");
+                    Console.WriteLine("Truncated the Cities table");
                 }
 
-                var insertCount = 0;
+                var dataTable = new DataTable();
+                dataTable.Columns.Add("Id");
+                dataTable.Columns.Add("Name");
+                dataTable.Columns.Add("CountryCode");
+                dataTable.Columns.Add("Longitude");
+                dataTable.Columns.Add("Latitude");
 
                 foreach (var city in cities)
                 {
-                    var cityInsert = $"INSERT INTO Cities (Id, Name, CountryCode, Longitude, Latitude) VALUES ({city.Id}, {city.Name}, {city.Country}, {city.Coord.Lon}, {city.Coord.Lat});";
-
-                    using (var insertCommand = new SqlCommand(cityInsert, connection))
-                    {
-                        insertCount += insertCommand.ExecuteNonQuery();
-                    }
+                    dataTable.Rows.Add(city.Id, city.Name, city.Country, city.Coord.Lon, city.Coord.Lat);
                 }
 
-                Console.WriteLine($"Inserted {insertCount} records; expected to insert {cities.Count}");
+                using (var bulkCopy = new SqlBulkCopy(connection))
+                {
+                    bulkCopy.BulkCopyTimeout = 3000;
+                    bulkCopy.DestinationTableName = "Cities";
+                    bulkCopy.NotifyAfter = 1000;
+                    bulkCopy.SqlRowsCopied += (sender, eventArgs) => Console.WriteLine($"Wrote {eventArgs.RowsCopied} records");
+                    bulkCopy.WriteToServer(dataTable);
+                }
             }
+
+            Console.WriteLine("Cities table updated");
         }
     }
 
