@@ -1,5 +1,7 @@
 using CoverMe.Configuration;
 using CoverMe.Data;
+using CoverMe.Services;
+using CoverMe.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,12 @@ namespace CoverMe
             services.AddDbContext<CoverMeDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
-            });            
+            });
+
+            services.AddMemoryCache();
+
+            // Register our services
+            services.AddScoped<ICityService, CityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
