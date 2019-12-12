@@ -4,14 +4,16 @@ using CoverMe.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CoverMe.Data.Migrations
+namespace CoverMe.Migrations
 {
     [DbContext(typeof(CoverMeDbContext))]
-    partial class CoverMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191212191843_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,9 +24,7 @@ namespace CoverMe.Data.Migrations
             modelBuilder.Entity("CoverMe.Models.City", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("CountryCode")
                         .HasColumnType("nvarchar(max)");

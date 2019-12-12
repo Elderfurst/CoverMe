@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoverMe.Data.Migrations
+namespace CoverMe.Migrations
 {
     public partial class Initial : Migration
     {
@@ -11,8 +11,7 @@ namespace CoverMe.Data.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     CountryCode = table.Column<string>(nullable: true),
                     Longitude = table.Column<float>(nullable: false),
