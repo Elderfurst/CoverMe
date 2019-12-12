@@ -1,3 +1,7 @@
 .vs/
 CoverMe/bin/
 CoverMe/obj/
+CitiesImporter/bin/
+CitiesImporter/obj/
+CoverMe/Resources/city.list.json
+CoverMe/Resources/city.list.json.gz
