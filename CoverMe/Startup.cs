@@ -38,7 +38,7 @@ namespace CoverMe
             services.AddMemoryCache();
 
             // Register our services
-            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ILocationService, LocationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

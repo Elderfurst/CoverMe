@@ -9,6 +9,7 @@ namespace CoverMe.Models
         public string EmailAddress { get; set; }
         public DateTime TimeToSend { get; set; }
         public string Timezone { get; set; }
-        public int CityId { get; set; }
+        public float Latitude { get; set; }
+        public float Longitude { get; set; }
     }
 }

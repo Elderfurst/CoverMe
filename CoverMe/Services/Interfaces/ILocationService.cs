@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace CoverMe.Services.Interfaces
 {
-    public interface ICityService
+    public interface ILocationService
     {
-        Task<IEnumerable<City>> SearchCities(string query);
+        Task<IEnumerable<Location>> Search(string query);
     }
 }

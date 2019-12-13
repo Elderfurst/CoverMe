@@ -4,14 +4,16 @@ using CoverMe.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoverMe.Migrations
 {
     [DbContext(typeof(CoverMeDbContext))]
-    partial class CoverMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191212231603_RemoveCities")]
+    partial class RemoveCities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,14 +28,11 @@ namespace CoverMe.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Latitude")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Longitude")
-                        .HasColumnType("real");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
