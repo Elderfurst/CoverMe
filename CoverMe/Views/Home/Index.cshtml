@@ -27,7 +27,6 @@
                     };
                 },
                 processResults: function (data) {
-                    console.log(data);
                     return {
                         results: data
                     };
@@ -49,12 +48,7 @@
     }
 
     function formatLocationSelection(location) {
-        console.log("format location selection");
-        console.log(location);
-        return {
-            lat: location.latitude,
-            lon: location.longitude
-        };
+        return location.fullAddress;
     }
 </script>
 

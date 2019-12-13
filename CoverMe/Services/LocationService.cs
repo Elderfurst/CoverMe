@@ -41,9 +41,8 @@ namespace CoverMe.Services
 
             return azureLocationResponse.Results.Select(x => new Location
             {
-                FullAddress = x.Address.FreeFormAddress,
-                Latitude = x.Position.Lat,
-                Longitude = x.Position.Lon
+                Id = $"{x.Position.Lat};{x.Position.Lon}",
+                FullAddress = x.Address.FreeFormAddress
             });
         }
     }

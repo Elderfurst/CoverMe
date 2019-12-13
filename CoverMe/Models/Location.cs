@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CoverMe.Models
+﻿namespace CoverMe.Models
 {
     public class Location
     {
+        // This is built using a combination of lat and long to fit the Select2 library's format
+        public string Id { get; set; }
         public string FullAddress { get; set; }
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
     }
 }
