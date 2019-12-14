@@ -11,5 +11,6 @@ namespace CoverMe.Models
         public string Timezone { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }
+        public int RainThreshold { get; set; }
     }
 }
