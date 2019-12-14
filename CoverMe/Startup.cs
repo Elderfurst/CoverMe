@@ -39,6 +39,9 @@ namespace CoverMe
 
             // Register our services
             services.AddScoped<ILocationService, LocationService>();
+
+            // Used for recompiling while working on the app
+            services.AddMvc().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
