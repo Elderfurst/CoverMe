@@ -39,6 +39,7 @@ namespace CoverMe
 
             // Register our services
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             // Used for recompiling while working on the app
             services.AddMvc().AddRazorRuntimeCompilation();
