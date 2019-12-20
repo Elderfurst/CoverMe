@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CoverMe.Models;
+using System;
 
 namespace CoverMe.Controllers
 {
@@ -9,7 +9,9 @@ namespace CoverMe.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var timeZones = TimeZoneInfo.GetSystemTimeZones();
+
+            return View(timeZones);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
