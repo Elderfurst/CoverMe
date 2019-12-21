@@ -26,7 +26,7 @@
 </div>
 
 <div class="row mt-5">
-    <div class="col-sm-6 offset-sm-3">
+    <form class="col-sm-6 offset-sm-3" onsubmit="onClickSignUp(event)">
         <div class="form-group">
             <label for="inputEmailAddress">Email Address</label>
             <input type="email" class="form-control" id="inputEmailAddress" />
@@ -38,15 +38,15 @@
         </div>
         <div class="form-group">
             <label for="inputLocation">Select a Location</label>
-            <select class="address-search form-control select2-single" id="inputLocation"></select>
+            <select class="address-search form-control select2-single" id="inputLocation" required></select>
         </div>
         <div class="form-group">
             <label for="inputTime">Notification Time</label>
-            <input type="time" class="form-control" id="inputTime" />
+            <input type="time" class="form-control" id="inputTime" required/>
         </div>
         <div class="form-group">
             <label for="inputTimeZone">TimeZone</label>
-            <select name="TimeZone" class="form-control" id="inputTimeZone">
+            <select name="TimeZone" class="form-control" id="inputTimeZone" required>
                 @foreach (var timeZone in Model)
                 {
                     <text>
@@ -57,15 +57,15 @@
         </div>
         <div class="form-group">
             <label for="inputRainThreshold">Rain Minimum Percentage <small>(Number between 0 and 100)</small></label>
-            <input type="number" class="form-control" id="inputRainThreshold" />
+            <input type="number" class="form-control" id="inputRainThreshold" required/>
         </div>
         <div class="form-group">
-            <button type="button" class="form-control btn-info" onclick="onClickSignUp()" id="signUpButton">Sign Up</button>
+            <button type="submit" class="form-control btn-info" id="signUpButton">Sign Up</button>
         </div>
         <div class="form-group text-center">
             <small><u><a>Click Here to Unsubscribe</a></u></small>
         </div>
-    </div>
+    </form>
 </div>
 
 
@@ -107,8 +107,8 @@
         return location.fullAddress;
     }
 
-    function onClickSignUp() {
-        console.log("signing up");
+    function onClickSignUp(event) {
+        event.preventDefault();
 
         // Disable the sign up button to prevent spamming
         $("#signUpButton").prop("disabled", true);
