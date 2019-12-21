@@ -1,7 +1,9 @@
-﻿using CoverMe.Data;
+﻿using System;
+using CoverMe.Data;
 using CoverMe.Models;
 using CoverMe.Services.Interfaces;
 using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace CoverMe.Services
 {
@@ -15,7 +17,39 @@ namespace CoverMe.Services
         }
         public async Task AddNotificationRequest(NotificationRequest request)
         {
+            if (request.EmailAddress == null && request.PhoneNumber == null)
+            {
+                throw new Exception("Either e-mail address or phone number needs to be supplied");
+            }
+
+            if (request.EmailAddress != null && !IsValidEmail(request.EmailAddress))
+            {
+                throw new Exception("Email address is improperly formatted");
+            }
+
+            if (request.PhoneNumber != null)
+            {
+                // Strip normal characters added to phone numbers
+                request.PhoneNumber = request.PhoneNumber.Replace("-", "").Replace("(", "").Replace(")", "");
+            }
+
             await Db.NotificationRequests.AddAsync(request);
+
+            await Db.SaveChangesAsync();
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var emailAddress = new MailAddress(email);
+
+                return emailAddress.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
