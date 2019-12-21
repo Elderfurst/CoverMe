@@ -33,7 +33,7 @@
         </div>
         <div class="col-sm-2 offset-sm-5">or</div>
         <div class="form-group">
-            <label for="inputPhoneNumber">Phone Number</label>
+            <label for="inputPhoneNumber">Phone Number <small>(Format: 123456789)</small></label>
             <input type="tel" class="form-control" id="inputPhoneNumber" />
         </div>
         <div class="form-group">
@@ -56,11 +56,11 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="inputRainThreshold">Rain Threshold <small>(Number between 0 and 100)</small></label>
+            <label for="inputRainThreshold">Rain Minimum Percentage <small>(Number between 0 and 100)</small></label>
             <input type="number" class="form-control" id="inputRainThreshold" />
         </div>
         <div class="form-group">
-            <button type="button" class="form-control btn-info" click="onClickSignUp">Sign Up</button>
+            <button type="button" class="form-control btn-info" onclick="onClickSignUp()" id="signUpButton">Sign Up</button>
         </div>
         <div class="form-group text-center">
             <small><u><a>Click Here to Unsubscribe</a></u></small>
@@ -107,18 +107,41 @@
         return location.fullAddress;
     }
 
-    onClickSignUp() {
+    function onClickSignUp() {
+        console.log("signing up");
 
-        const location = $("#inputLocation").value.split(";");
+        // Disable the sign up button to prevent spamming
+        $("#signUpButton").prop("disabled", true);
+
+        const location = $("#inputLocation").val().split(";");
 
         $.post("Notification/RegisterForNotifications",
             {
-                phoneNumber: $("#inputPhoneNumber").value,
-                emailAddress: $("#inputEmailAddress").value,
-                latitude: location[0],
-                longitude: location[1],
-                rainThreshold: $("#inputRainThreshold").value,
-            });
+                timeZoneId: $("#inputTimeZone").val(),
+                timeToSend: $("#inputTime").val(),
+                requestBody: {
+                    phoneNumber: $("#inputPhoneNumber").val(),
+                    emailAddress: $("#inputEmailAddress").val(),
+                    latitude: location[0],
+                    longitude: location[1],
+                    rainThreshold: $("#inputRainThreshold").val(),
+                }
+            })
+            .done(function () {
+                new Toast({
+                    message: "Notification request successfully submitted!",
+                    type: "success",
+                });
+            })
+            .fail(function () {
+                new Toast({
+                    message: "Something went wrong. Please try again.",
+                    type: "danger",
+                });
+            })
+            .always(function () {
+                $("#signUpButton").prop("disabled", false);
+            });;
     }
 </script>
 
