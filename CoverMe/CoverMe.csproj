@@ -18,8 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="wwwroot\lib\toast-js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoverMe.Data\CoverMe.Data.csproj" />
   </ItemGroup>
 
 
