@@ -33,5 +33,13 @@ namespace CoverMe.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Unsubscribe(UnsubscribeRequest request)
+        {
+            await NotificationService.Unsubscribe(request);
+
+            return Ok();
+        }
     }
 }

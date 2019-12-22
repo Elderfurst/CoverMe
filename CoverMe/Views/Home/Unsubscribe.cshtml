@@ -1,0 +1,83 @@
+﻿@model IEnumerable<TimeZoneInfo>
+
+@{
+    ViewData["Title"] = "- Unsubscribe";
+}
+
+<!--International Telephone Input Scripts-->
+<link href="~/lib/intl-tel-input/css/intlTelInput.min.css" rel="stylesheet" />
+<script src="~/lib/intl-tel-input/js/intlTelInput.min.js"></script>
+
+<div class="text-center">
+    <h1><span class="oi oi-rain"></span> CoverMe</h1>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 offset-sm-3 text-center">
+        <small>
+            We're sorry to see you go!
+            Just enter your email or phone number where you receive our notifications and we'll remove you immediately.
+        </small>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <form class="col-sm-6 offset-sm-3" onsubmit="onClickUnsubscribe(event)">
+        <div class="form-group">
+            <label for="inputEmailAddress">Email Address</label>
+            <input type="email" class="form-control" id="inputEmailAddress" />
+        </div>
+        <div class="col-sm-2 offset-sm-5 text-center">or</div>
+        <div class="form-group">
+            <label for="inputPhoneNumber">Phone Number</label>
+            <input type="tel" class="form-control" id="inputPhoneNumber" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="form-control btn-info" id="unsubscribeButton">Unsubscribe</button>
+        </div>
+        <div class="col-sm-6 offset-sm-3 text-center">
+            <small><u><a asp-controller="Home" asp-action="Index">Return Home</a></u></small>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    // Initialize phone input
+    var phoneInput = document.querySelector("#inputPhoneNumber");
+    var iti = window.intlTelInput(phoneInput, {
+        utilsScript: "/lib/intl-tel-input/js/utils.js",
+    });
+
+    function onClickUnsubscribe(event) {
+        // Prevent the default onSubmit event
+        event.preventDefault();
+
+        // Disable the sign up button to prevent spamming
+        $("#unsubscribeButton").prop("disabled", true);
+
+        $.post("/Notification/Unsubscribe",
+            {
+                request: {
+                    phoneNumber: iti.getNumber(intlTelInputUtils.numberFormat.E164),
+                    phoneNumberCountryCode: iti.getSelectedCountryData()["iso2"],
+                    emailAddress: $("#inputEmailAddress").val(),
+                }
+            })
+            .done(function () {
+                new Toast({
+                    message: "Successfully unsubscribed!",
+                    type: "success",
+                });
+            })
+            .fail(function () {
+                new Toast({
+                    message: "Something went wrong. Please try again.",
+                    type: "danger",
+                });
+            }) 
+            .always(function () {
+                $("#unsubscribeButton").prop("disabled", false);
+            });;
+    }
+</script>
