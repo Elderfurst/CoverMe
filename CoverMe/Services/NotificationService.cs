@@ -17,6 +17,7 @@ namespace CoverMe.Services
         }
         public async Task AddNotificationRequest(NotificationRequest request)
         {
+            // Validate various pieces of the request
             if (request.EmailAddress == null && request.PhoneNumber == null)
             {
                 throw new Exception("Either e-mail address or phone number needs to be supplied");
@@ -25,6 +26,24 @@ namespace CoverMe.Services
             if (request.EmailAddress != null && !IsValidEmail(request.EmailAddress))
             {
                 throw new Exception("Email address is improperly formatted");
+            }
+
+            if (request.PhoneNumber != null)
+            {
+                // Get the standard E.164 phone number parser
+                var phoneNumberParser = PhoneNumbers.PhoneNumberUtil.GetInstance();
+
+                var parsedPhoneNumber = phoneNumberParser.Parse(request.PhoneNumber.ToString(), request.PhoneNumberCountryCode);
+
+                if (!phoneNumberParser.IsValidNumber(parsedPhoneNumber))
+                {
+                    throw new Exception("Phone number is improperly formatted");
+                }
+            }
+
+            if (request.RainThreshold < 0 || request.RainThreshold > 100)
+            {
+                throw new Exception("Rain threshold needs to be between 0 and 100 (inclusive)");
             }
 
             await Db.NotificationRequests.AddAsync(request);
