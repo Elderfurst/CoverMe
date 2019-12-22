@@ -1,4 +1,5 @@
-﻿using CoverMe.Models;
+﻿using CoverMe.Extensions;
+using CoverMe.Models;
 using CoverMe.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,17 +17,14 @@ namespace CoverMe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterForNotifications(NotificationRequest requestBody, string timeZoneId, DateTime timeToSend)
+        public async Task<IActionResult> RegisterForNotifications(NotificationRequestBody requestBody)
         {
-            // Take the time submitted and offset by the selected time zone
-            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
-
-            // Convert from the sent DateTime to a TimeSpan for saving
-            requestBody.TimeToSend = TimeZoneInfo.ConvertTimeToUtc(timeToSend, timeZone).TimeOfDay;
+            // Parse the request body into the correct model
+            var notificationRequest = requestBody.ToNotificationRequest();
 
             try
             {
-                await NotificationService.AddNotificationRequest(requestBody);
+                await NotificationService.AddNotificationRequest(notificationRequest);
             }
             catch (Exception e)
             {

@@ -27,12 +27,6 @@ namespace CoverMe.Services
                 throw new Exception("Email address is improperly formatted");
             }
 
-            if (request.PhoneNumber != null)
-            {
-                // Strip normal characters added to phone numbers
-                request.PhoneNumber = request.PhoneNumber.Replace("-", "").Replace("(", "").Replace(")", "");
-            }
-
             await Db.NotificationRequests.AddAsync(request);
 
             await Db.SaveChangesAsync();

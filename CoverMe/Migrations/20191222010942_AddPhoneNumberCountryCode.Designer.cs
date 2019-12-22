@@ -4,14 +4,16 @@ using CoverMe.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoverMe.Migrations
 {
     [DbContext(typeof(CoverMeDbContext))]
-    partial class CoverMeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191222010942_AddPhoneNumberCountryCode")]
+    partial class AddPhoneNumberCountryCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace CoverMe.Migrations
                     b.Property<float>("Longitude")
                         .HasColumnType("real");
 
-                    b.Property<decimal?>("PhoneNumber")
+                    b.Property<decimal>("PhoneNumber")
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<string>("PhoneNumberCountryCode")
