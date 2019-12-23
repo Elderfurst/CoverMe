@@ -16,6 +16,7 @@ namespace CoverMe.Services
         {
             Db = db;
         }
+
         public async Task AddNotificationRequest(NotificationRequest request)
         {
             // Validate various pieces of the request

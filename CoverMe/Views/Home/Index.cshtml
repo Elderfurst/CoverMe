@@ -147,6 +147,7 @@
                 });
             })
             .fail(function () {
+                // TODO return error message from api instead of generic one
                 new Toast({
                     message: "Something went wrong. Please try again.",
                     type: "danger",
