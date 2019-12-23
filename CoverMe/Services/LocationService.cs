@@ -1,5 +1,5 @@
 ﻿using CoverMe.Configuration;
-using CoverMe.Models;
+using CoverMe.Data.Models;
 using CoverMe.Services.Interfaces;
 using Newtonsoft.Json;
 using System;

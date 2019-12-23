@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoverMe.Models
+namespace CoverMe.Data.Models
 {
     public class NotificationRequestBody
     {

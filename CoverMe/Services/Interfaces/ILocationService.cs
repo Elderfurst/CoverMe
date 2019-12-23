@@ -1,4 +1,4 @@
-﻿using CoverMe.Models;
+﻿using CoverMe.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

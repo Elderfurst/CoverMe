@@ -1,4 +1,4 @@
-﻿namespace CoverMe.Models
+﻿namespace CoverMe.Data.Models
 {
     public class UnsubscribeRequest
     {

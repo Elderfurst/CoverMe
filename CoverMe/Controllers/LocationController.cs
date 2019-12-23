@@ -1,4 +1,4 @@
-﻿using CoverMe.Models;
+﻿using CoverMe.Data.Models;
 using CoverMe.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

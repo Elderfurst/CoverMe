@@ -1,6 +1,6 @@
 ﻿using System;
-using CoverMe.Data;
-using CoverMe.Models;
+using CoverMe.Data.Data;
+using CoverMe.Data.Models;
 using CoverMe.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Net.Mail;

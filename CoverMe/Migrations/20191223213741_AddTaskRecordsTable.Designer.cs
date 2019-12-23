@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoverMe.Migrations
 {
     [DbContext(typeof(CoverMeDbContext))]
-    [Migration("20191214063350_AddRainThreshold")]
-    partial class AddRainThreshold
+    [Migration("20191223213741_AddTaskRecordsTable")]
+    partial class AddTaskRecordsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace CoverMe.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CoverMe.Models.NotificationRequest", b =>
+            modelBuilder.Entity("CoverMe.Data.Models.NotificationRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,24 +37,24 @@ namespace CoverMe.Migrations
                     b.Property<float>("Longitude")
                         .HasColumnType("real");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<decimal?>("PhoneNumber")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<string>("PhoneNumberCountryCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RainThreshold")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("TimeToSend")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Timezone")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("TimeToSend")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
                     b.ToTable("NotificationRequests");
                 });
 
-            modelBuilder.Entity("CoverMe.Models.SentNotification", b =>
+            modelBuilder.Entity("CoverMe.Data.Models.SentNotification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,6 +70,24 @@ namespace CoverMe.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SentNotifiations");
+                });
+
+            modelBuilder.Entity("CoverMe.Data.Models.TaskRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RecordsProcessed")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeProcessed")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskRecords");
                 });
 #pragma warning restore 612, 618
         }

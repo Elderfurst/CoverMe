@@ -1,5 +1,5 @@
 using CoverMe.Configuration;
-using CoverMe.Data;
+using CoverMe.Data.Data;
 using CoverMe.Services;
 using CoverMe.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +32,8 @@ namespace CoverMe
 
             services.AddDbContext<CoverMeDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
+                // Register the SQL Server connection string and set the migration assembly the main web app
+                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"), x => x.MigrationsAssembly("CoverMe"));
             });
 
             services.AddMemoryCache();

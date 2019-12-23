@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CoverMe.Models
+namespace CoverMe.Data.Models
 {
     public class AzureLocationResponse
     {
