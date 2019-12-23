@@ -11,7 +11,5 @@ namespace NotificationProcessor
             WeatherUrl = Environment.GetEnvironmentVariable("OpenWeatherUrl");
             SubscriptionKey = Environment.GetEnvironmentVariable("OpenWeatherMapSubscriptionKey");
         }
-
-        public 
     }
 }
