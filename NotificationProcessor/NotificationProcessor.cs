@@ -6,6 +6,7 @@ using PhoneNumbers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -68,9 +69,26 @@ namespace NotificationProcessor
             }
         }
 
-        private void SendEmails(Dictionary<string, DailyData> records)
+        private async Task SendEmails(Dictionary<string, DailyData> records)
         {
-            var smtpClient = new SmtpClient(SmtpCredential.HostName, SmtpCredential.Port);
+            var smtpClient = new SmtpClient(SmtpCredential.HostName, SmtpCredential.Port)
+            {
+                Credentials = new NetworkCredential(SmtpCredential.Username, SmtpCredential.Password),
+            };
+
+            foreach (var record in records)
+            {
+                var mailMessage = new MailMessage()
+                {
+                    From = new MailAddress("coverme@nickanderson.dev"),
+                    Body = BuildEmailBody(record.Value),
+                    Subject = BuildEmailSubject(record.Value),
+                };
+
+                mailMessage.To.Add(new MailAddress(record.Key));
+
+                await smtpClient.SendMailAsync(mailMessage);
+            }
         }
 
         private void SendTexts(Dictionary<PhoneNumber, DailyData> records)
@@ -94,6 +112,16 @@ namespace NotificationProcessor
             // Start at the unix beginning time to have an accurate datetime
             var start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return start.AddMilliseconds(time);
+        }
+
+        private string BuildEmailBody(DailyData data)
+        {
+            return string.Empty;
+        }
+
+        private string BuildEmailSubject(DailyData data)
+        {
+            return string.Empty;
         }
     }
 }
