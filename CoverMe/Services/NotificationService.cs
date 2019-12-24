@@ -5,6 +5,7 @@ using CoverMe.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Linq;
+using PhoneNumbers;
 
 namespace CoverMe.Services
 {
@@ -52,7 +53,7 @@ namespace CoverMe.Services
             if (request.PhoneNumber != null)
             {
                 // Get the standard E.164 phone number parser
-                var phoneNumberParser = PhoneNumbers.PhoneNumberUtil.GetInstance();
+                var phoneNumberParser = PhoneNumberUtil.GetInstance();
 
                 var parsedPhoneNumber = phoneNumberParser.Parse(request.PhoneNumber.ToString(), request.PhoneNumberCountryCode);
 
