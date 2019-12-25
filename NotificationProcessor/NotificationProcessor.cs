@@ -1,4 +1,5 @@
 using CoverMe.Data.Data;
+using CoverMe.Data.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -67,6 +68,20 @@ namespace NotificationProcessor
                     }
                 }
             }
+
+            // Send emails and texts where necessary
+            await SendEmails(emailsToSend);
+            SendTexts(textsToSend);
+
+            // Save the record of this process
+            var taskRecord = new TaskRecord
+            {
+                TimeProcessed = processTime,
+                RecordsProcessed = recordsToProcess.Count,
+            };
+
+            await Db.TaskRecords.AddAsync(taskRecord);
+            await Db.SaveChangesAsync();
         }
 
         private async Task SendEmails(Dictionary<string, DailyData> records)
