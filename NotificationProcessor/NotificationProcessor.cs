@@ -158,7 +158,7 @@ namespace NotificationProcessor
 
         private string BuildTextMessageBody(DailyData data)
         {
-            return string.Empty;
+            return $"Precipitation is coming your way today! Probability: {data.PrecipProbability}";
         }
     }
 }
