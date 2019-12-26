@@ -10,6 +10,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace NotificationProcessor
 {
@@ -108,7 +110,22 @@ namespace NotificationProcessor
 
         private void SendTexts(Dictionary<PhoneNumber, DailyData> records)
         {
+            var accountSid = Environment.GetEnvironmentVariable("TwilioAccountSID");
+            var authToken = Environment.GetEnvironmentVariable("TwilioAuthToken");
+            var appPhoneNumber = Environment.GetEnvironmentVariable("TwilioPhoneNumber");
 
+            TwilioClient.Init(accountSid, authToken);
+
+            foreach (var record in records)
+            {
+                // Nothing needs to be done with the result, the message is sent when the Create method is called
+                _ = MessageResource.Create(
+                    body: BuildTextMessageBody(record.Value),
+                    from: new Twilio.Types.PhoneNumber(appPhoneNumber),
+                    // Phone number must include the country code being sent to
+                    to: new Twilio.Types.PhoneNumber($"{record.Key.CountryCode}{record.Key.NationalNumber}")
+                );
+            }
         }
 
         private SmtpCredential LoadSmtpCredential()
@@ -135,6 +152,11 @@ namespace NotificationProcessor
         }
 
         private string BuildEmailSubject(DailyData data)
+        {
+            return string.Empty;
+        }
+
+        private string BuildTextMessageBody(DailyData data)
         {
             return string.Empty;
         }
