@@ -27,7 +27,7 @@ namespace NotificationProcessor
         }
 
         [FunctionName("NotificationProcessor")]
-        public async Task Run([TimerTrigger("0 * * * * *")]TimerInfo _)
+        public async Task Run([TimerTrigger("0 */15 * * * *")]TimerInfo myTimer)
         {
             var processTime = DateTime.UtcNow;
 
@@ -96,9 +96,9 @@ namespace NotificationProcessor
 
             foreach (var record in records)
             {
-                var mailMessage = new MailMessage()
+                var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("coverme@nickanderson.dev"),
+                    From = new MailAddress("coverme@nickanderson.dev", "CoverMe"),                    
                     Body = BuildEmailBody(record.Value),
                     Subject = BuildEmailSubject(record.Value),
                 };
@@ -152,7 +152,7 @@ namespace NotificationProcessor
 
         private string BuildTextMessageBody(DailyData data)
         {
-            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
+            return $"CoverMe - Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
         }
     }
 }
