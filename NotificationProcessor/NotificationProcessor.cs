@@ -49,10 +49,14 @@ namespace NotificationProcessor
             {
                 var weather = await weatherService.GetWeatherByLocation(record.Latitude, record.Longitude);
 
-                var weatherToday = weather.Daily.Data.FirstOrDefault(x => ConvertTimeToDateTime(x.Time).Date == processTime.Date);
+                // Today's weather will always be the first entry in the daily list
+                var weatherToday = weather.Daily.Data[0];
+
+                var temp = weatherToday.PrecipProbability * 100;
 
                 // Convert the precipitation probability to an int value for comparison
-                if (record.RainThreshold >= (weatherToday.PrecipProbability * 100))
+                // and make sure the threshold is less than the chance
+                if (record.RainThreshold <= (weatherToday.PrecipProbability * 100))
                 {
                     if (record.EmailAddress != null)
                     {
@@ -64,7 +68,7 @@ namespace NotificationProcessor
                         // Get the standard E.164 phone number parser
                         var phoneNumberParser = PhoneNumberUtil.GetInstance();
 
-                        var parsedPhoneNumber = phoneNumberParser.Parse(record.PhoneNumber.ToString(), record.PhoneNumberCountryCode);
+                        var parsedPhoneNumber = phoneNumberParser.Parse(record.PhoneNumber.ToString(), record.PhoneNumberCountryCode.ToUpper());
 
                         textsToSend.Add(parsedPhoneNumber, weatherToday);
                     }
@@ -123,7 +127,7 @@ namespace NotificationProcessor
                     body: BuildTextMessageBody(record.Value),
                     from: new Twilio.Types.PhoneNumber(appPhoneNumber),
                     // Phone number must include the country code being sent to
-                    to: new Twilio.Types.PhoneNumber($"{record.Key.CountryCode}{record.Key.NationalNumber}")
+                    to: new Twilio.Types.PhoneNumber($"+{record.Key.CountryCode}{record.Key.NationalNumber}")
                 );
             }
         }
@@ -139,26 +143,19 @@ namespace NotificationProcessor
             };
         }
 
-        private DateTime ConvertTimeToDateTime(ulong time)
-        {
-            // Start at the unix beginning time to have an accurate datetime
-            var start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return start.AddMilliseconds(time);
-        }
-
         private string BuildEmailBody(DailyData data)
         {
-            return string.Empty;
+            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
         }
 
         private string BuildEmailSubject(DailyData data)
         {
-            return string.Empty;
+            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
         }
 
         private string BuildTextMessageBody(DailyData data)
         {
-            return $"Precipitation is coming your way today! Probability: {data.PrecipProbability}";
+            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
         }
     }
 }
