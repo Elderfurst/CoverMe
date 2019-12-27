@@ -1,11 +1,11 @@
 ﻿using System;
 using CoverMe.Data.Data;
 using CoverMe.Data.Models;
+using CoverMe.Data.Extensions;
 using CoverMe.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Linq;
-using PhoneNumbers;
 
 namespace CoverMe.Services
 {
@@ -52,10 +52,7 @@ namespace CoverMe.Services
             // Remove any records matching the passed phone number
             if (request.PhoneNumber != null)
             {
-                // Get the standard E.164 phone number parser
-                var phoneNumberParser = PhoneNumberUtil.GetInstance();
-
-                var parsedPhoneNumber = phoneNumberParser.Parse(request.PhoneNumber.ToString(), request.PhoneNumberCountryCode);
+                var parsedPhoneNumber = request.PhoneNumber.ParsePhoneNumber(request.PhoneNumberCountryCode);
 
                 var phoneNumberMatches = Db.NotificationRequests.Where(
                     x => x.PhoneNumber == parsedPhoneNumber.NationalNumber 

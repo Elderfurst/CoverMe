@@ -1,8 +1,8 @@
 using CoverMe.Data.Data;
 using CoverMe.Data.Models;
+using CoverMe.Data.Extensions;
 using Microsoft.Azure.WebJobs;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PhoneNumbers;
 using System;
 using System.Collections.Generic;
@@ -65,10 +65,7 @@ namespace NotificationProcessor
 
                     if (record.PhoneNumber != null)
                     {
-                        // Get the standard E.164 phone number parser
-                        var phoneNumberParser = PhoneNumberUtil.GetInstance();
-
-                        var parsedPhoneNumber = phoneNumberParser.Parse(record.PhoneNumber.ToString(), record.PhoneNumberCountryCode.ToUpper());
+                        var parsedPhoneNumber = record.PhoneNumber.ParsePhoneNumber(record.PhoneNumberCountryCode);
 
                         textsToSend.Add(parsedPhoneNumber, weatherToday);
                     }

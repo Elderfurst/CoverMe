@@ -1,7 +1,7 @@
 ﻿using CoverMe.Data.Models;
 using System;
 
-namespace CoverMe.Extensions
+namespace CoverMe.Data.Extensions
 {
     public static class NotificationRequestBodyExtensions
     {
@@ -12,7 +12,7 @@ namespace CoverMe.Extensions
 
             return new NotificationRequest
             {
-                PhoneNumber = requestBody.PhoneNumber?.ParsePhoneNumber(requestBody.PhoneNumberCountryCode),
+                PhoneNumber = requestBody.PhoneNumber?.ParsePhoneNumber(requestBody.PhoneNumberCountryCode).NationalNumber,
                 PhoneNumberCountryCode = requestBody.PhoneNumberCountryCode,
                 EmailAddress = requestBody.EmailAddress,
                 TimeToSend = TimeZoneInfo.ConvertTimeToUtc(requestBody.TimeToSend, timeZone).TimeOfDay,

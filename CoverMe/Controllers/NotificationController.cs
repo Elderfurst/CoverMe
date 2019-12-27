@@ -1,4 +1,4 @@
-﻿using CoverMe.Extensions;
+﻿using CoverMe.Data.Extensions;
 using CoverMe.Data.Models;
 using CoverMe.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
