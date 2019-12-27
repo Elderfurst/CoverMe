@@ -27,7 +27,7 @@ namespace NotificationProcessor
                 .GetAsync($"{lat},{lon}?exclude=minutely,hourly,currently,alerts,flags");
 
             return JsonConvert
-                .DeserializeObject<WeatherResult>(await weatherResponse.Content.ReadAsStringAsync());        
+                .DeserializeObject<WeatherResult>(await weatherResponse.Content.ReadAsStringAsync());
         }
     }
 }

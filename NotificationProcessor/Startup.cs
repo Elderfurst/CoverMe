@@ -12,7 +12,7 @@ namespace NotificationProcessor
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var databaseConnectionString = Environment.GetEnvironmentVariable("databaseConnectionString");
+            var databaseConnectionString = Environment.GetEnvironmentVariable("DatabaseConnectionString");
             
             builder.Services.AddDbContext<CoverMeDbContext>(options =>
             {
