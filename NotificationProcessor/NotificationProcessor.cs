@@ -27,7 +27,7 @@ namespace NotificationProcessor
         }
 
         [FunctionName("NotificationProcessor")]
-        public async Task Run([TimerTrigger("0 */15 * * * *")]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("0 * * * * *")]TimerInfo _)
         {
             var processTime = DateTime.UtcNow;
 
