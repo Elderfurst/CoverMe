@@ -25,7 +25,7 @@ namespace CoverMe.Services
         {
             var queryParams = HttpUtility.ParseQueryString(string.Empty);
             queryParams["api-version"] = "1.0";
-            queryParams["subscription-key"] = AppSettings.AuthorizationKeys.AzureMapServiceKey;
+            queryParams["subscription-key"] = AppSettings.AzureMapServiceKey;
             queryParams["query"] = query;
 
             var requestUrlBuilder = new UriBuilder(AppSettings.AzureMapsBaseUrl)
