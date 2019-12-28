@@ -100,7 +100,7 @@ namespace NotificationProcessor
                 {
                     From = new MailAddress("coverme@nickanderson.dev", "CoverMe"),                    
                     Body = BuildEmailBody(record.Value),
-                    Subject = BuildEmailSubject(record.Value),
+                    Subject = BuildEmailSubject(),
                 };
 
                 mailMessage.To.Add(new MailAddress(record.Key));
@@ -142,17 +142,17 @@ namespace NotificationProcessor
 
         private string BuildEmailBody(DailyData data)
         {
-            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
+            return $"Precipitation is coming your way today! Type: {data.PrecipType}. Probability: {data.PrecipProbability * 100}%";
         }
 
-        private string BuildEmailSubject(DailyData data)
+        private string BuildEmailSubject()
         {
-            return $"Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
+            return "Precipitation is coming your way today!";
         }
 
         private string BuildTextMessageBody(DailyData data)
         {
-            return $"CoverMe - Precipitation is coming your way today! Probability: %{data.PrecipProbability * 100}";
+            return $"CoverMe - Precipitation is coming your way today! Type: {data.PrecipType}. Probability: {data.PrecipProbability * 100}%";
         }
     }
 }
