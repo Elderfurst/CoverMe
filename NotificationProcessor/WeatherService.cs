@@ -7,15 +7,12 @@ namespace NotificationProcessor
 {
     public class WeatherService
     {
-        private readonly string WeatherUrl;
         private readonly HttpClient HttpClient;
         public WeatherService()
         {
-            WeatherUrl = Environment.GetEnvironmentVariable("DarkSkyUrl");
-
             HttpClient = new HttpClient()
             {
-                BaseAddress = new Uri(WeatherUrl),
+                BaseAddress = new Uri(Environment.GetEnvironmentVariable("DarkSkyUrl")),
             };
         }
 
