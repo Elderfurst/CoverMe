@@ -30,7 +30,7 @@ namespace CoverMe.Services
 
             var requestUrlBuilder = new UriBuilder(AppSettings.AzureMapsBaseUrl)
             {
-                Query = queryParams.ToString()
+                Query = queryParams.ToString(),
             };
 
             var requestUrl = requestUrlBuilder.ToString();
@@ -42,7 +42,7 @@ namespace CoverMe.Services
             return azureLocationResponse.Results.Select(x => new Location
             {
                 Id = $"{x.Position.Lat};{x.Position.Lon}",
-                FullAddress = x.Address.FreeFormAddress
+                FullAddress = x.Address.FreeFormAddress,
             });
         }
     }
