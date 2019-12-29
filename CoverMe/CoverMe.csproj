@@ -3,12 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>7d60deca-7747-48bd-8b42-9612ecfbab2c</UserSecretsId>
-    <ApplicationInsightsResourceId>/subscriptions/723ab669-bd07-46de-afad-7670527cceac/resourcegroups/CoverMe/providers/microsoft.insights/components/CoverMe</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="libphonenumber-csharp" Version="8.11.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
@@ -20,17 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\lib\toast-js\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CoverMe.Data\CoverMe.Data.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
-
-
-
 </Project>

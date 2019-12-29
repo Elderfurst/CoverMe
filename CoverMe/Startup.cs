@@ -44,7 +44,6 @@ namespace CoverMe
 
             // Used for recompiling while working on the app
             services.AddMvc().AddRazorRuntimeCompilation();
-            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
