@@ -5,11 +5,8 @@ namespace CoverMe.Data.Extensions
 {
     public static class NotificationRequestBodyExtensions
     {
-        public static NotificationRequest ToNotificationRequest(this NotificationRequestBody requestBody)
+        public static NotificationRequest ToNotificationRequest(this NotificationRequestBody requestBody, TimeZoneInfo timeZone)
         {
-            // Take the time submitted and offset by the selected time zone
-            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(requestBody.TimeZoneId);
-
             return new NotificationRequest
             {
                 PhoneNumber = requestBody.PhoneNumber?.ParsePhoneNumber(requestBody.PhoneNumberCountryCode).NationalNumber,

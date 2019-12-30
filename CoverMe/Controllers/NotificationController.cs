@@ -10,17 +10,22 @@ namespace CoverMe.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationService NotificationService;
+        private readonly ILocationService LocationService;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService, ILocationService locationService)
         {
             NotificationService = notificationService;
+            LocationService = locationService;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterForNotifications(NotificationRequestBody requestBody)
         {
+            // Load the timezone for the selected location
+            var timeZone = await LocationService.GetTimeZone(requestBody.Latitude, requestBody.Longitude);
+
             // Parse the request body into the correct model
-            var notificationRequest = requestBody.ToNotificationRequest();
+            var notificationRequest = requestBody.ToNotificationRequest(timeZone);
 
             try
             {

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using TimeZoneConverter;
 
 namespace CoverMe.Services
 {
@@ -44,6 +45,38 @@ namespace CoverMe.Services
                 Id = $"{x.Position.Lat};{x.Position.Lon}",
                 FullAddress = x.Address.FreeFormAddress,
             });
+        }
+
+        public async Task<TimeZoneInfo> GetTimeZone(float lat, float lon)
+        {
+            var queryParams = HttpUtility.ParseQueryString(string.Empty);
+            queryParams["api-version"] = "1.0";
+            queryParams["subscription-key"] = AppSettings.AzureMapServiceKey;
+            queryParams["query"] = $"{lat},{lon}";
+
+            var requestUrlBuilder = new UriBuilder(AppSettings.AzureMapsTimeZoneUrl)
+            {
+                Query = queryParams.ToString(),
+            };
+
+            var requestUrl = requestUrlBuilder.ToString();
+
+            var response = await Client.GetAsync(requestUrl);
+
+            var azureTimeZoneResponse = JsonConvert.DeserializeObject<AzureTimeZoneResponse>(await response.Content.ReadAsStringAsync());
+
+            var timeZoneId = azureTimeZoneResponse.TimeZones[0].Id;
+
+            // The timezones from Azure Maps come back in Unix timezone Id format
+            // If running on Windows we need to convert
+            try
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            }
+            catch
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(TZConvert.IanaToWindows(timeZoneId));
+            }
         }
     }
 }

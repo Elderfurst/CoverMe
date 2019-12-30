@@ -4,21 +4,6 @@
     ViewData["Title"] = "- Home";
 }
 
-@{
-    string GenerateTimeZoneDisplay(TimeZoneInfo timeZone)
-    {
-        var timeZoneOffsetString = timeZone.BaseUtcOffset.ToString();
-        var separator = "";
-
-        if (!timeZoneOffsetString.Contains("-"))
-        {
-            separator = "+";
-        }
-
-        return $"(UTC{separator}{timeZoneOffsetString}) {timeZone.Id}";
-    }
-}
-
 
 <!--Include CDN links for Select2 -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
@@ -63,17 +48,6 @@
         <div class="form-group">
             <label for="inputTime">Notification Time</label>
             <input type="time" class="form-control" id="inputTime" required />
-        </div>
-        <div class="form-group">
-            <label for="inputTimeZone">TimeZone</label>
-            <select name="TimeZone" class="form-control" id="inputTimeZone" required>
-                @foreach (var timeZone in Model)
-                {
-                    <text>
-                        <option value="@timeZone.Id">@GenerateTimeZoneDisplay(timeZone)</option>
-                    </text>
-                }
-            </select>
         </div>
         <div class="form-group">
             <label for="inputRainThreshold">Precipitation Minimum Percentage <small>(Number between 0 and 100)</small></label>
@@ -140,6 +114,7 @@
 
         // Disable the sign up button to prevent spamming
         $("#signUpButton").prop("disabled", true);
+        $('#signUpButton').text('Processing...');
 
         const location = $("#inputLocation").val().split(";");
 
@@ -152,7 +127,6 @@
                     latitude: location[0],
                     longitude: location[1],
                     timeToSend: $("#inputTime").val(),
-                    timeZoneId: $("#inputTimeZone").val(),
                     rainThreshold: $("#inputRainThreshold").val(),
                 }
             })
@@ -170,7 +144,9 @@
                 });
             })
             .always(function () {
+                // Reset the sign up button after a failure or a success
                 $("#signUpButton").prop("disabled", false);
+                $('#signUpButton').text('Sign Up');
             });;
     }
 </script>
