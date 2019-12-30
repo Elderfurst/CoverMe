@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace CoverMe.Controllers
 {
@@ -8,13 +7,6 @@ namespace CoverMe.Controllers
         public HomeController() {}
 
         public IActionResult Index()
-        {
-            var timeZones = TimeZoneInfo.GetSystemTimeZones();
-
-            return View(timeZones);
-        }
-
-        public IActionResult Unsubscribe()
         {
             return View();
         }
